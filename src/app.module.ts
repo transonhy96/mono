@@ -9,9 +9,10 @@ import { AuthInterceptor } from './auth/auth.interceptor';
 import { HashingModule } from './hashing/hashing.module';
 import { JwtService } from './jwt/jwt.service';
 import { JwtModule } from './jwt/jwt.module';
+import { SharesModule } from './shares/shares.module';
 
 @Module({
-  imports: [PrismaModule, AuthModule, UserModule, HashingModule, JwtModule],
+  imports: [PrismaModule, AuthModule, UserModule, HashingModule, JwtModule, SharesModule],
   controllers: [AppController],
   providers: [AppService, {
     provide: APP_INTERCEPTOR,
