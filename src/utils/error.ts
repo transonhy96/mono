@@ -1,9 +1,9 @@
 import { HttpException, HttpStatus } from "@nestjs/common";
 import { AppError } from "src/configs/constants";
-export const get_http_exeption = (status: HttpStatus, msg?: string, error = null) => {
+export const get_http_exeption = (status: HttpStatus, msg?: string) => {
     return new HttpException({
         status,
-        error: error ? error.msg : msg,
+        error: msg,
     }, status)
 }
 export const get_app_exeption = (err: AppError): HttpException => {

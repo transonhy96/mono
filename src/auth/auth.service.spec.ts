@@ -3,14 +3,45 @@ import { AuthService } from './auth.service';
 import { SignupDto } from './dto/auth.dto';
 import { UserModule } from 'src/user/user.module';
 import { UserService } from 'src/user/user.service';
+import { HashingService } from 'src/hashing/hashing.service';
+import { HashingModule } from 'src/hashing/hashing.module';
+import { JwtModule } from 'src/jwt/jwt.module';
+import { JwtService } from 'src/jwt/jwt.service';
+import { AppError } from 'src/configs/constants';
+import { get_app_exeption } from 'src/utils/error';
 
 describe('AuthService', () => {
   let service: AuthService;
+  const user_email = 'test@test.com';
+  const user_password = 'test';
+  const def_hash = 'hash';
+  const jwt_token = 'token';
+
+  const mockHashService = {
+    gen_hash: jest.fn((pwd: string) => {
+      return def_hash
+    }),
+    compare_hash: jest.fn((hash, pass) => {
+      return hash === pass
+    })
+  }
+  const mockJwtService = {
+    sign: jest.fn((p: JWTPayload) => {
+      return jwt_token
+    }),
+    decode: jest.fn((token: string) => {
+      return jwt_token
+    }),
+    verify: jest.fn((token: string) => {
+      return token === jwt_token;
+    })
+  }
   let userMocks = [
     {
-      email: 'test@test.com',
+      email: user_email,
       id: 0,
-      token: 'token'
+      token: jwt_token,
+      password: user_password
     }
   ];
   const mockUserService = {
@@ -19,20 +50,26 @@ describe('AuthService', () => {
     }),
     create_user: jest.fn(async (dto: SignupDto) => {
       let index = userMocks.length + 1;
-      return userMocks.push({
+      let new_user = {
         ...dto,
         id: index,
-        token: 'token'
-      })
+        token: jwt_token
+      };
+      userMocks.push(new_user);
+      return new_user;
     })
   }
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [AuthService],
-      imports: [UserModule]
+      imports: [UserModule, HashingModule, JwtModule]
     })
       .overrideProvider(UserService)
       .useValue(mockUserService)
+      .overrideProvider(HashingService)
+      .useValue(mockHashService)
+      .overrideProvider(JwtService)
+      .useValue(mockJwtService)
       .compile();
 
     service = module.get<AuthService>(AuthService);
@@ -44,17 +81,63 @@ describe('AuthService', () => {
 
   describe("signup", () => {
     it('should create new user', async () => {
-      let mock = { email: 'test2@test.com', password: 'test' };
-      console.log(userMocks)
+      let mock: SignupDto = { email: 'test2@test.com', password: user_password };
       expect(await service.signup(mock)).toEqual(
         {
           id: expect.any(Number),
           email: mock.email,
-          token: 'token'
+          token: jwt_token
         }
       );
-      expect(mockUserService.get_user_by_email).toHaveBeenCalledWith(mock);
-      expect(mockUserService.create_user).toHaveBeenCalledWith(mock);
-    })
-  })
+      expect(mockUserService.get_user_by_email).toHaveBeenCalledWith(mock.email);
+      expect(mockHashService.gen_hash).toHaveBeenCalledWith(mock.password);
+      expect(mockUserService.create_user).toHaveBeenCalledWith({
+        email: mock.email,
+        password: mockHashService.gen_hash(mock.password)
+      });
+      expect(mockJwtService.sign).toHaveBeenCalledWith({
+        email: mock.email,
+        id: expect.any(Number)
+      });
+    });
+    it('should throw already existed user error', async () => {
+      let mock: SignupDto = { email: user_email, password: user_password };
+      expect(async () => { await service.signup(mock) }).rejects.toThrow(
+        get_app_exeption(AppError.EMAIL_EXISTED)
+      );
+      expect(mockUserService.get_user_by_email).toHaveBeenCalledWith(mock.email);
+    });
+  });
+
+
+  describe("login", () => {
+    it('should return user token', async () => {
+      let mock: SignupDto = { email: user_email, password: user_password };
+      expect(await service.login(mock)).toEqual(
+        {
+          token: jwt_token
+        }
+      );
+      expect(mockUserService.get_user_by_email).toHaveBeenCalledWith(mock.email);
+      expect(mockJwtService.sign).toHaveBeenCalledWith({
+        email: mock.email,
+        id: mockUserService.get_user_by_email(mock.email).id
+      });
+    });
+    it('should throw user not existed error', async () => {
+      let mock: SignupDto = { email: 'random@test.com', password: user_password };
+      expect(async () => { await service.login(mock) }).rejects.toThrow(
+        get_app_exeption(AppError.USER_NOT_EXISTED)
+      );
+      expect(mockUserService.get_user_by_email).toHaveBeenCalledWith(mock.email);
+    });
+
+    it('should throw generic error', async () => {
+      let mock: SignupDto = { email: user_email, password: 'random' };
+      expect(async () => { await service.login(mock) }).rejects.toThrow(
+        get_app_exeption(AppError.GENERIC)
+      );
+      expect(mockUserService.get_user_by_email).toHaveBeenCalledWith(mock.email);
+    });
+  });
 });

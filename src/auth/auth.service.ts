@@ -41,9 +41,9 @@ export class AuthService {
     async login(body: SignupDto) {
         let { email, password } = body;
         let existed = await this.userService.get_user_by_email(email);
-        if (!existed) throw dev() ? get_app_exeption(AppError.USER_NOT_EXISTED) : get_app_exeption(AppError.GENERIC);
+        if (!existed) throw get_app_exeption(AppError.USER_NOT_EXISTED);
         let match = await this.hashService.compare_hash(password, existed.password);
-        if (!match) throw dev() ? get_app_exeption(AppError.INCORRECT_PASSWORD) : get_app_exeption(AppError.GENERIC);
+        if (!match) throw get_app_exeption(AppError.GENERIC);
         const token = await this.jwtService.sign({
             id: existed.id,
             email: existed.email
