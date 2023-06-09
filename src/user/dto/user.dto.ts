@@ -18,3 +18,9 @@ export class CreateUserDto {
   @ApiProperty({ required: true })
   password: string;
 }
+
+export class CreateUserReponseDto {
+  id: Number;
+  email: string;
+  token: string;
+}

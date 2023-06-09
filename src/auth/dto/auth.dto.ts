@@ -19,3 +19,5 @@ export class SignupDto {
   @ApiProperty({ required: true })
   password: string;
 }
+
+

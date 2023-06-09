@@ -6,15 +6,15 @@ import { AppError } from 'src/configs/constants';
 import { jwt_sign } from 'src/utils/jwt';
 import { compare_hash, gen_hash } from 'src/utils/hashing';
 import { dev } from 'src/configs';
+import { CreateUserReponseDto } from 'src/user/dto/user.dto';
 @Injectable()
 export class AuthService {
 
     constructor(private userService: UserService) { }
 
-    async signup(body: SignupDto) {
+    async signup(body: SignupDto): Promise<CreateUserReponseDto> {
         let { email, password } = body;
         let existed = await this.userService.get_user_by_email(email);
-        console.log({ existed })
         if (existed) throw get_app_exeption(AppError.EMAIL_EXISTED);
         let password_hash = await gen_hash(password);
         if (password_hash) {
@@ -22,13 +22,15 @@ export class AuthService {
                 email,
                 password: password_hash
             });
-            console.log({ user })
             let user_token = await jwt_sign({
                 id: user.id,
                 email: user.email
             });
-            console.log({ user_token })
-            return user_token;
+            return {
+                email,
+                id: user.id,
+                token: user_token
+            };
         }
     }
 
@@ -38,9 +40,12 @@ export class AuthService {
         if (!existed) throw dev() ? get_app_exeption(AppError.USER_NOT_EXISTED) : get_app_exeption(AppError.GENERIC);
         let match = await compare_hash(password, existed.password);
         if (!match) throw dev() ? get_app_exeption(AppError.INCORRECT_PASSWORD) : get_app_exeption(AppError.GENERIC);
-        return await jwt_sign({
+        const token = await jwt_sign({
             id: existed.id,
             email: existed.email
         });
+        return {
+            token
+        };
     }
 }
