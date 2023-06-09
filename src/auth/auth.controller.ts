@@ -1,15 +1,17 @@
-import { Controller, Post } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { jwt_sign } from 'src/utils/jwt';
+import { Body, Controller, Post } from '@nestjs/common';
+import { AuthService } from './auth.service';
+import { SignupDto } from './dto/auth.dto';
 
 @Controller('auth')
 export class AuthController {
 
-    constructor(private prisma: PrismaService) { }
+    constructor(private authService: AuthService) { }
     @Post("/signup")
-    async signup() {
-        let token = await jwt_sign({ id: 1, name: 'test' });
-        await this.prisma.user.findMany();
-        return token;
+    async signup(@Body() body: SignupDto) {
+        return this.authService.signup(body);
+    }
+    @Post("/login")
+    async login(@Body() body: SignupDto) {
+        return this.authService.login(body);
     }
 }
