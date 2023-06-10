@@ -9,12 +9,14 @@ import { AuthGuard } from "src/auth/auth.guard";
 import { UserService } from "src/user/user.service";
 import { SharesService } from "./shares.service";
 import { PaginationParamsDto } from "src/shared/dtos/pagination.dto";
+import { SharesGateway } from "./shares.gateway";
 @Controller("shares")
 export class SharesController {
   constructor(
     private shareService: SharesService,
     private userService: UserService,
-  ) {}
+    private shareGateway: SharesGateway,
+  ) { }
 
   @Get("/list")
   async shares(@Query() { offset, limit }: PaginationParamsDto) {
@@ -33,13 +35,17 @@ export class SharesController {
   async createShare(
     @Body() postData: CreateShareDto,
     @AuthUser() auth_user: UserPayload,
-  ): Promise<UserShare> {
+  ) {
     const { url } = postData;
     const user = await this.userService.get_user_by_email(auth_user.email);
     if (!user) throw get_app_exeption(AppError.USER_NOT_EXISTED);
-    return this.shareService.create_share({
+    const share = await this.shareService.create_share({
       url,
       user_id: user.id,
     });
+    if (share) {
+      this.shareGateway.gossip(user, share);
+    }
+    return share;
   }
 }
