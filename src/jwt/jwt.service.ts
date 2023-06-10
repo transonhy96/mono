@@ -1,20 +1,19 @@
-import { Injectable } from '@nestjs/common';
-import * as jwt from 'jsonwebtoken';
-import { APP_CONFIG } from 'src/configs';
+import { Injectable } from "@nestjs/common";
+import * as jwt from "jsonwebtoken";
+import { APP_CONFIG } from "src/configs";
 @Injectable()
 export class JwtService {
+  async sign(payload: UserPayload) {
+    return jwt.sign(payload, process.env.SECRET, {
+      expiresIn: APP_CONFIG.JWT_EXPIRED,
+    });
+  }
 
-    async sign(payload: JWTPayload) {
-        return jwt.sign(payload, process.env.SECRET, {
-            expiresIn: APP_CONFIG.JWT_EXPIRED
-        })
-    }
+  async decode(token: string) {
+    return jwt.decode(token);
+  }
 
-    async decode(token: string) {
-        return jwt.decode(token)
-    }
-
-    async verify(token: string) {
-        return jwt.verify(token, process.env.SECRET)
-    }
+  async verify(token: string) {
+    return jwt.verify(token, process.env.SECRET);
+  }
 }

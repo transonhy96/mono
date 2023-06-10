@@ -1,4 +1,4 @@
-declare type JWTPayload = {
-    email: string,
-    id: Number
-}
+declare type UserPayload = {
+  email: string;
+  id: number;
+};
