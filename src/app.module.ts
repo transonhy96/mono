@@ -10,7 +10,7 @@ import { HashingModule } from "./hashing/hashing.module";
 import { JwtService } from "./jwt/jwt.service";
 import { JwtModule } from "./jwt/jwt.module";
 import { SharesModule } from "./shares/shares.module";
-
+import { ConfigModule } from "@nestjs/config";
 @Module({
   imports: [
     PrismaModule,
@@ -19,6 +19,9 @@ import { SharesModule } from "./shares/shares.module";
     HashingModule,
     JwtModule,
     SharesModule,
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
   ],
   controllers: [AppController],
   providers: [
