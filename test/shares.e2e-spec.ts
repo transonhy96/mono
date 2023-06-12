@@ -32,8 +32,9 @@ describe("SharesController (e2e)", () => {
     const prisma = moduleFixture.get<PrismaService>(PrismaService);
     const auth = moduleFixture.get<AuthService>(AuthService);
     await app.init();
-    await prisma.user.deleteMany({});
+    //Order is important
     await prisma.userShare.deleteMany({});
+    await prisma.user.deleteMany({});
     signUpRes = await auth.signup({
       email: "share@test.com",
       password: "test",
