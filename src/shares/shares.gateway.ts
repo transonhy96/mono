@@ -11,7 +11,7 @@ export class SharesGateway {
   constructor(
     private userService: UserService,
     private jwtService: JwtService,
-  ) { }
+  ) {}
   @WebSocketServer()
   server: Server;
 
@@ -25,7 +25,8 @@ export class SharesGateway {
 
   async handleConnection(socket: Socket) {
     try {
-      const token = socket.handshake.headers.authorization.split(" ")[1];
+      const auths = socket.handshake.headers?.authorization?.split(" ");
+      const token = auths && auths.length === 2 ? auths[1] : "";
       const decoded = (await this.jwtService.verify(token)) as UserPayload;
       if (decoded.email) {
         const existed = await this.userService.get_user_by_email(decoded.email);
