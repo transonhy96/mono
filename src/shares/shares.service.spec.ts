@@ -4,6 +4,7 @@ import { User, UserShare } from "@prisma/client";
 import { PaginationParamsDto } from "src/shared/dtos/pagination.dto";
 import { CreateShareDto } from "./dto/user_shares.dto";
 import { PrismaService } from "src/prisma/prisma.service";
+import { SharesGateway } from "./shares.gateway";
 
 describe("SharesService", () => {
   let service: SharesService;
@@ -57,7 +58,7 @@ describe("SharesService", () => {
   };
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [SharesService, PrismaService],
+      providers: [SharesService, PrismaService, SharesGateway],
     })
       .overrideProvider(PrismaService)
       .useValue(mockPrismaService)
@@ -65,7 +66,6 @@ describe("SharesService", () => {
 
     service = module.get<SharesService>(SharesService);
   });
-
   it("should be defined", () => {
     expect(service).toBeDefined();
   });
@@ -111,11 +111,13 @@ describe("SharesService", () => {
         user_id: 0,
         url: new_url,
       } as CreateShareDto;
-      expect(await service.create_share(mock)).toEqual({
+      const share = await service.create_share(mock);
+      expect(share).toEqual({
         id: expect.any(Number),
         url: new_url,
         user_id: expect.any(Number),
       });
+
       expect(mockPrismaService.userShare.create).toHaveBeenCalled();
     });
   });

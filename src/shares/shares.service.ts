@@ -6,7 +6,7 @@ import { PaginationParamsDto } from "src/shared/dtos/pagination.dto";
 
 @Injectable()
 export class SharesService {
-  constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService) {}
   async get_shares({ limit, offset }: PaginationParamsDto) {
     const count = await this.prisma.userShare.count();
     const shares = await this.prisma.userShare.findMany({

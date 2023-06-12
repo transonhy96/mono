@@ -1,6 +1,5 @@
 import { Body, Controller, Get, Post, Query, UseGuards } from "@nestjs/common";
 import { ApiHeader } from "@nestjs/swagger";
-import { UserShare } from "@prisma/client";
 import { AuthUser } from "src/auth/auth.decorator";
 import { get_app_exeption } from "src/utils/error";
 import { CreateShareDto } from "./dto/user_shares.dto";
@@ -16,7 +15,7 @@ export class SharesController {
     private shareService: SharesService,
     private userService: UserService,
     private shareGateway: SharesGateway,
-  ) { }
+  ) {}
 
   @Get("/list")
   async shares(@Query() { offset, limit }: PaginationParamsDto) {
