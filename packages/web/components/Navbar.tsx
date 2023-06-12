@@ -1,4 +1,4 @@
-import { Login } from "./Login";
+import { Auth } from "./Auth";
 
 export const Navbar = () => {
   return (
@@ -12,7 +12,7 @@ export const Navbar = () => {
         </a>
         <div className="flex flex-row items-center gap-5 mt-5 sm:justify-end sm:mt-0 sm:pl-5">
           <div className="font-medium text-blue-500">
-            <Login></Login>
+            <Auth></Auth>
           </div>
         </div>
       </nav>
