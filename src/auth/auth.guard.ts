@@ -8,10 +8,9 @@ export class AuthGuard implements CanActivate {
     private jwtService: JwtService,
   ) {}
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const req = context.switchToHttp().getRequest();
-    const token = req?.headers?.authorization?.split("Bearer ")[1];
     try {
-      const user = (await this.jwtService.verify(token)) as UserPayload;
+      const req = context.switchToHttp().getRequest();
+      const user = (await this.jwtService.verify_header(req)) as UserPayload;
       //TODO: implement redis cached
       const existed = this.userService.get_user_by_email(user.email);
       return existed ? true : false;
