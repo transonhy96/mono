@@ -13,10 +13,13 @@ export class AuthInterceptor implements NestInterceptor {
     context: ExecutionContext,
     next: CallHandler<any>,
   ): Promise<Observable<any>> {
-    const req = context.switchToHttp().getRequest();
-    const token = req?.headers?.authorization?.split("Bearer ")[1];
-    const user = (await this.jwtService.decode(token)) as UserPayload;
-    req.user = user;
+    try {
+      const req = context.switchToHttp().getRequest();
+      const user = (await this.jwtService.decode_header(req)) as UserPayload;
+      req.user = user;
+    } catch (error) {
+      console.log({ error });
+    }
     return next.handle();
   }
 }

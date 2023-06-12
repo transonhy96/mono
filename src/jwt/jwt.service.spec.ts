@@ -1,12 +1,9 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { JwtService } from "./jwt.service";
+import { Request } from "express";
 
 describe("JwtService", () => {
   let service: JwtService;
-  const payload = {
-    email: "test@test.com",
-    id: 0,
-  };
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [JwtService],
@@ -20,20 +17,34 @@ describe("JwtService", () => {
   });
   describe("extract_header", () => {
     it("should return token", async () => {
-      const mockHeader = "Bearer token";
-      expect(service.extract_header(mockHeader)).toBe("token");
+      const mockReq = {
+        headers: {
+          authorization: "Bearer token",
+        },
+      } as Request;
+      expect(service.extract_token(mockReq)).toBe("token");
     });
     it("should return empty string", () => {
-      const mockHeader = "Bearer";
-      expect(service.extract_header(mockHeader)).toBe("");
+      const req = {
+        headers: {
+          authorization: "Bearer ",
+        },
+      } as Request;
+      expect(service.extract_token(req)).toBe("");
     });
     it("should return empty string", () => {
-      const mockHeader = "";
-      expect(service.extract_header(mockHeader)).toBe("");
+      const mockReq = {
+        headers: {
+          authorization: "",
+        },
+      } as Request;
+      expect(service.extract_token(mockReq)).toBe("");
     });
     it("should return empty string", () => {
-      const mockHeader = "token Bearer";
-      expect(service.extract_header(mockHeader)).toBe("");
+      const mockReq = {
+        headers: {},
+      } as Request;
+      expect(service.extract_token(mockReq)).toBe("");
     });
   });
 });
