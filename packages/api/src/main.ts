@@ -9,6 +9,7 @@ async function bootstrap() {
       transform: true,
     }),
   );
+  app.enableCors();
   const config = new DocumentBuilder()
     .setTitle("Simple youtube sharing video api")
     .setDescription("Simple youtube sharing video api")

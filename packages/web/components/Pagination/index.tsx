@@ -1,35 +1,40 @@
 "use client";
 import { useState } from "react";
 import { Button } from "../ui/button";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 export const PageSize = 3;
 export interface PaginationProps {
   total: number;
-  next?: () => void;
-  prev?: () => void;
+  next?: (offset: number, limit: number) => void;
+  prev?: (offset: number, limit: number) => void;
 }
 const Pagination = (props: PaginationProps) => {
   const { total, next, prev } = props;
   const [currentPage, setCurrentPage] = useState<number>(1);
   const nextHandler = () => {
-    let current = currentPage;
-    setCurrentPage(current++);
-    next && next();
+    console.log("next");
+    setCurrentPage(
+      currentPage + 1 <= Math.ceil(total / PageSize)
+        ? currentPage + 1
+        : currentPage
+    );
+    next && next(currentPage * PageSize, PageSize);
   };
   const prevHandler = () => {
-    let current = currentPage - 1;
-    setCurrentPage(current > 0 ? current : 1);
-    prev && prev();
+    setCurrentPage(currentPage - 1 > 1 ? currentPage - 1 : 1);
+    prev && prev(currentPage * PageSize, PageSize);
   };
   return (
-    <>
-      <div>Total page{total / PageSize}</div>
+    <div className="flex gap-2 items-center border rounded-md p-2">
+      <div>Total page: {Math.ceil(total / PageSize)}</div>
+      <div>Current page: {currentPage}</div>
       {currentPage > 1 && (
         <Button
           onClick={() => {
             prevHandler();
           }}
         >
-          Previous
+          <ChevronLeft />
         </Button>
       )}
       {total > PageSize && (
@@ -38,10 +43,10 @@ const Pagination = (props: PaginationProps) => {
             nextHandler();
           }}
         >
-          Next
+          <ChevronRight />
         </Button>
       )}
-    </>
+    </div>
   );
 };
 export default Pagination;

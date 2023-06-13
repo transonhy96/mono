@@ -1,20 +1,19 @@
 "use client";
 import { useAppStore } from "@/lib/store";
-import { useEffect, Fragment } from "react";
+import { useEffect, Fragment, useState } from "react";
 import ShareItem from "./ShareItem";
 import VideoSkeletal from "./Skeletal";
 import { nanoid } from "nanoid";
 import Pagination, { PageSize } from "../Pagination";
 const ShareList = () => {
   const { fetchShares, shares, isFetchShareLoading, count } = useAppStore();
-
+  const [offset, setOffset] = useState(0);
   useEffect(() => {
-    fetchShares();
-  }, [fetchShares]);
-  console.log({ isFetchShareLoading });
+    fetchShares(offset, PageSize);
+  }, [fetchShares, offset]);
   const skeletals = Array(PageSize).fill(1);
   return (
-    <div className="flex flex-col items-center gap-10 mt-10">
+    <div className="flex flex-col items-center gap-10 mt-10 h-screen">
       {isFetchShareLoading
         ? skeletals.map(() => (
           <Fragment key={nanoid()}>
@@ -22,12 +21,20 @@ const ShareList = () => {
           </Fragment>
         ))
         : shares.length > 0 &&
-        shares
-          .filter((s) => s.url !== "http://localhost:3000")
-          .map((s) => (
-            <ShareItem key={s.id} url={s.url} user_id={s.user_id} />
-          ))}
-      {count > PageSize && <Pagination total={count}></Pagination>}
+        shares.map((s) => (
+          <ShareItem key={s.id} url={s.url} user_id={s.user_id} />
+        ))}
+      {count > PageSize && (
+        <Pagination
+          next={(offset) => {
+            setOffset(offset);
+          }}
+          prev={(offset) => {
+            setOffset(offset);
+          }}
+          total={count}
+        ></Pagination>
+      )}
     </div>
   );
 };
