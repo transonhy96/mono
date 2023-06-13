@@ -16,18 +16,35 @@ import {
 } from "../ui/form";
 import { MODAL } from "@/types/modal";
 import useAxiosAuth from "@/lib/hooks/useAxiosAuth";
+import { useAppStore } from "@/lib/store";
 export function SharingDialog(){
   const axiosAuth = useAxiosAuth();
+  const {toggle,addAlert} = useAppStore();
     const form = useForm<z.infer<typeof SharingSchema>>({
         resolver: zodResolver(SharingSchema),
       });
       async function onSubmit(values: z.infer<typeof SharingSchema>) {
-        const res = await axiosAuth.post("/shares/create",
+        try {
+          const res = await axiosAuth.post("/shares/create",
         {
           url:values.url,
           user_id:0
         });
-        console.log(res);
+          if(res.status === 201){
+            addAlert({
+              title:"Create share",
+              type:'success',
+              desc:'Create share successfully'
+            });
+            toggle(MODAL.SHARING);
+          }else{
+            console.log(res.data);
+          }
+        } catch (error) {
+          //alert error
+          console.log(error);
+        }
+        
       }
     
     return(

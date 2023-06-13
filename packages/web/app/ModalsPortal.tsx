@@ -1,7 +1,7 @@
 "use client";
 import { SharingDialog } from "@/components";
 
-export function Modals(){
+export function ModalsPortal(){
     return (
         <>
             <SharingDialog></SharingDialog>
