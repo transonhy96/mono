@@ -50,6 +50,8 @@ export class AuthService {
       email: existed.email,
     });
     return {
+      id: existed.id,
+      email: existed.email,
       token,
     };
   }
