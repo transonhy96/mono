@@ -1,62 +1,64 @@
+import { useForm } from "react-hook-form";
 import { Input } from "../ui/input";
-import { Label } from "../ui/label";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+
+import { z } from "zod";
+import { RegisterSchema } from "./schemas/RegisterSchema";
+import { zodResolver } from "@hookform/resolvers/zod"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 const Register = () => {
+  const form = useForm<z.infer<typeof RegisterSchema>>({
+    resolver: zodResolver(RegisterSchema),
+  });
+  function onSubmit(values: z.infer<typeof RegisterSchema>) {
+    
+    console.log(values)
+  }
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Register</CardTitle>
-        <CardDescription></CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-2">
-        <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="email" className="text-right">
-              Email
-            </Label>
-            <Input
-              id="email"
-              placeholder="your@email.com"
-              type="email"
-              className="col-span-3"
-            />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="password" className="text-right">
-              Password
-            </Label>
-            <Input
-              id="password"
-              placeholder="password"
-              type="password"
-              className="col-span-3"
-            />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="password-re" className="text-right">
-              Reenter password
-            </Label>
-            <Input
-              id="password-re"
-              placeholder="Reenter your password"
-              type="password"
-              className="col-span-3"
-            />
-          </div>
-        </div>
-      </CardContent>
-      <CardFooter>
-        <Button className="">Register</Button>
-      </CardFooter>
-    </Card>
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Email</FormLabel>
+              <FormControl>
+                <Input type="email" placeholder="Your email" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Password</FormLabel>
+              <FormControl>
+                <Input type="password" placeholder="Your password" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="reenter"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Password</FormLabel>
+              <FormControl>
+                <Input type="password" placeholder="Reenter your password" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Button type="submit">Register</Button>
+      </form>
+    </Form>
   );
 };
 export default Register;
