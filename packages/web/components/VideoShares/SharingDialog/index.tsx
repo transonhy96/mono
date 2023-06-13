@@ -1,7 +1,7 @@
 "use client";
-import { Dialoger } from "../Dialog";
+import { Dialoger } from "../../Dialog";
 import { useForm } from "react-hook-form";
-import { Input } from "../ui/input";
+import { Input } from "../../ui/input";
 import { Button } from "@/components/ui/button";
 import { z } from "zod";
 import { SharingSchema } from "./schemas/SharingSchema";
@@ -13,11 +13,11 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "../ui/form";
+} from "../../ui/form";
 import { MODAL } from "@/types/modal";
 import useAxiosAuth from "@/lib/hooks/useAxiosAuth";
 import { useAppStore } from "@/lib/store";
-export function SharingDialog(){
+const SharingDialog = ()=>{
   const axiosAuth = useAxiosAuth();
   const {toggle,addAlert} = useAppStore();
     const form = useForm<z.infer<typeof SharingSchema>>({
@@ -70,3 +70,4 @@ export function SharingDialog(){
       </Dialoger>
     )
 }
+export default SharingDialog;
