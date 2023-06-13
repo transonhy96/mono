@@ -14,11 +14,14 @@ const handler = NextAuth({
           email: credentials?.email,
           password: credentials?.password,
         });
-        console.log(res);
-        const token = res.data.token;
-        if (token) {
+        
+        const user = res.data;
+        console.log({rx: user});
+        if (user) {
           // Any object returned will be saved in `user` property of the JWT
-          return token;
+          return {
+            ...user
+          };
         } else {
           // If you return null then an error will be displayed advising the user to check their details.
           return null;
@@ -30,15 +33,19 @@ const handler = NextAuth({
   ],
   callbacks:{
   async signIn({ user, account, profile, email, credentials }) {
+    console.log({user:user});
     return true;
   },
   async redirect({ url, baseUrl }) {
     return baseUrl
   },
   async session({ session, token, user }) {
+    let usr = token?.user as {token:string,id:string; email:string};
+    session.user = usr;
     return session
   },
   async jwt({ token, user, account, profile }) {
+    user && (token.user = user)
     return token
   }},
   pages:{
