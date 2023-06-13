@@ -4,16 +4,28 @@ import { Button } from "@/components/ui/button";
 
 import { z } from "zod";
 import { LoginSchema } from "./schemas/LoginSchema";
-import { zodResolver } from "@hookform/resolvers/zod"
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "../ui/form";
+import { signIn } from "next-auth/react";
 const Login = () => {
-
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
   });
   function onSubmit(values: z.infer<typeof LoginSchema>) {
-    
-    console.log(values)
+    console.log(values);
+    signIn("credentials", {
+      email: values.email,
+      password: values.password,
+      redirect: true,
+      callbackUrl: "/",
+    });
   }
 
   return (

@@ -4,15 +4,38 @@ import { Button } from "@/components/ui/button";
 
 import { z } from "zod";
 import { RegisterSchema } from "./schemas/RegisterSchema";
-import { zodResolver } from "@hookform/resolvers/zod"
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "../ui/form";
+import axios from "@/lib/axios";
+import { signIn } from "next-auth/react";
 const Register = () => {
   const form = useForm<z.infer<typeof RegisterSchema>>({
     resolver: zodResolver(RegisterSchema),
   });
-  function onSubmit(values: z.infer<typeof RegisterSchema>) {
-    
-    console.log(values)
+  async function onSubmit(values: z.infer<typeof RegisterSchema>) {
+    console.log(values);
+    try {
+      const { data } = await axios.post("/auth/signup", {
+        email: values.email,
+        password: values.password,
+      });
+      console.log(data);
+      if (data.token) {
+        signIn("credentials", {
+          email: values.email,
+          password: values.password,
+        });
+      }
+    } catch (error) {
+      //handle error
+    }
   }
   return (
     <Form {...form}>
@@ -50,7 +73,11 @@ const Register = () => {
             <FormItem>
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input type="password" placeholder="Reenter your password" {...field} />
+                <Input
+                  type="password"
+                  placeholder="Reenter your password"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
