@@ -1,31 +1,24 @@
 import axios from "@/lib/axios";
-import NextAuth from "next-auth/next";
+import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 const handler = NextAuth({
   providers: [
     CredentialsProvider({
-      // The name to display on the sign in form (e.g. "Sign in with...")
-      name: "Credentials",
-      // `credentials` is used to generate a form on the sign in page.
-      // You can specify which fields should be submitted, by adding keys to the `credentials` object.
-      // e.g. domain, username, password, 2FA token, etc.
-      // You can pass any HTML attribute to the <input> tag through the object.
+      name: "Sign in",
       credentials: {
         email: { label: "Email", type: "text", placeholder: "Your email" },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials, req) {
-        const res = await axios.post("/auth/login",{
-          body: JSON.stringify({
-            email: credentials?.email,
-            password: credentials?.password,
-          }),
+      async authorize(credentials) {
+        const res = await axios.post("/auth/login", {
+          email: credentials?.email,
+          password: credentials?.password,
         });
-        const user = res.data;
-
-        if (user) {
+        console.log(res);
+        const token = res.data.token;
+        if (token) {
           // Any object returned will be saved in `user` property of the JWT
-          return user;
+          return token;
         } else {
           // If you return null then an error will be displayed advising the user to check their details.
           return null;
@@ -35,4 +28,28 @@ const handler = NextAuth({
       },
     }),
   ],
+  callbacks:{
+  async signIn({ user, account, profile, email, credentials }) {
+    return true;
+  },
+  async redirect({ url, baseUrl }) {
+    return baseUrl
+  },
+  async session({ session, token, user }) {
+    return session
+  },
+  async jwt({ token, user, account, profile }) {
+    return token
+  }},
+  pages:{
+    error: '/'
+  },
+
+  session: {
+    strategy: "jwt",
+  },
+  jwt: {
+    secret: process.env.NEXTAUTH_SECRET,
+  },
 });
+export { handler as GET, handler as POST };

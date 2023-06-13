@@ -1,3 +1,5 @@
+"use client";
+
 import { useForm } from "react-hook-form";
 import { Input } from "../ui/input";
 import { Button } from "@/components/ui/button";
@@ -19,13 +21,10 @@ const Login = () => {
     resolver: zodResolver(LoginSchema),
   });
   function onSubmit(values: z.infer<typeof LoginSchema>) {
-    console.log(values);
     signIn("credentials", {
       email: values.email,
-      password: values.password,
-      redirect: true,
-      callbackUrl: "/",
-    });
+      password: values.password
+    })
   }
 
   return (

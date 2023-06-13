@@ -1,3 +1,4 @@
+"use client";
 import { useForm } from "react-hook-form";
 import { Input } from "../ui/input";
 import { Button } from "@/components/ui/button";
@@ -20,7 +21,6 @@ const Register = () => {
     resolver: zodResolver(RegisterSchema),
   });
   async function onSubmit(values: z.infer<typeof RegisterSchema>) {
-    console.log(values);
     try {
       const { data } = await axios.post("/auth/signup", {
         email: values.email,

@@ -1,4 +1,5 @@
-import { signIn, signOut, useSession } from "next-auth/react";
+"use client";
+import { signOut, useSession } from "next-auth/react";
 import { Sidebar } from "../Sidebar";
 import { Tab, TabItem } from "../Tab";
 import { Button } from "../ui/button";
@@ -23,21 +24,15 @@ export const Auth = () => {
   ];
   const { data: session } = useSession();
   const trigger = useMemo(() => {
-    console.log(session?.user);
-    if (session?.user) {
+    if (session && session?.user) {
+      console.log(session)
       return <Button onClick={() => signOut()}>{session.user.email}</Button>;
     } else {
-      return <Button onClick={() => signIn()}>Login</Button>;
+      return <Button>Login</Button>;
     }
   }, [session]);
-  return <>{trigger}</>;
-  {
-    /* <Sidebar title="" desc="" position="right" trigger={trigger}> */
-  }
-  {
-    /*   <Tab tabs={tabs} active={tabs[0].key}></Tab> */
-  }
-  {
-    /* </Sidebar> */
-  }
+  return <Sidebar title="" desc="" position="right" trigger={trigger}>
+    <Tab tabs={tabs} active={tabs[0].key}></Tab>
+  </Sidebar>;
+  
 };
