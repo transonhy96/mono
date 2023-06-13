@@ -4,18 +4,21 @@ import axios from "../axios";
 
 export interface ShareSlice {
     shares: Share[];
+    count: number;
     fetchShares: () => void;
     isFetchShareLoading: boolean;
 }
 export const createShareSlice: StateCreator<ShareSlice> = (set, get) => ({
     shares: [],
-    fetchShares: async()=>{
-        set({isFetchShareLoading:true});
-        const res = await axios.get("/shares/list");
+    count: 0,
+    fetchShares: async () => {
+        set({ isFetchShareLoading: true });
+        const res = await axios.get("/shares/list/?offset=0&limit=3");
         set({
-            shares:res.data.items
+            shares: res.data.items,
         });
-        set({isFetchShareLoading:true});
+        set({ count: res.data.count });
+        set({ isFetchShareLoading: false });
     },
-    isFetchShareLoading:false
-})
+    isFetchShareLoading: false,
+});
