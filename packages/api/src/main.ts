@@ -4,8 +4,11 @@ import { ValidationPipe } from "@nestjs/common";
 import { SwaggerModule, DocumentBuilder } from "@nestjs/swagger";
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.useGlobalPipes(new ValidationPipe({}));
-  app.enableCors();
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+    }),
+  );
   const config = new DocumentBuilder()
     .setTitle("Simple youtube sharing video api")
     .setDescription("Simple youtube sharing video api")
