@@ -38,9 +38,7 @@ export function Sidebar(props: SheetProps) {
         </SheetHeader>
         {children && children}{" "}
         <SheetFooter>
-          <SheetClose asChild>
-            <Button type={actionType}>{action}</Button>
-          </SheetClose>
+          <SheetClose asChild></SheetClose>
         </SheetFooter>
       </SheetContent>
     </Sheet>

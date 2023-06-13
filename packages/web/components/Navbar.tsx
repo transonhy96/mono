@@ -1,4 +1,5 @@
 import { Auth } from "./Auth";
+import ThemeSwitcher from "./ThemeSwitcher";
 
 export const Navbar = () => {
   return (
@@ -14,6 +15,7 @@ export const Navbar = () => {
           <div className="font-medium text-blue-500">
             <Auth></Auth>
           </div>
+          <ThemeSwitcher></ThemeSwitcher>
         </div>
       </nav>
     </header>

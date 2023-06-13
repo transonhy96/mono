@@ -42,11 +42,11 @@ const Register = () => {
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="password-re" className="text-right">
-              Confirm password
+              Reenter password
             </Label>
             <Input
               id="password-re"
-              placeholder="Confirm your password"
+              placeholder="Reenter your password"
               type="password"
               className="col-span-3"
             />
