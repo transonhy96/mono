@@ -23,8 +23,10 @@ const Login = () => {
   function onSubmit(values: z.infer<typeof LoginSchema>) {
     signIn("credentials", {
       email: values.email,
-      password: values.password
-    })
+      password: values.password,
+    }).then((s) => {
+      console.log({ s });
+    });
   }
 
   return (

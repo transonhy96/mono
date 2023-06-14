@@ -1,12 +1,3 @@
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Fragment } from "react";
 export interface TabItem {
@@ -36,7 +27,7 @@ export function Tab(props: TabProps) {
 
       {tabs.length > 0 &&
         tabs.map((s) => (
-          <TabsContent key={s.key} value={s.key}>
+          <TabsContent className="p-3 mt-4" key={s.key} value={s.key}>
             {s.asForm ? <></> : <div>{s.content}</div>}
           </TabsContent>
         ))}

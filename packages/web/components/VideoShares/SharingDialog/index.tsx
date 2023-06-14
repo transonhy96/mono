@@ -32,7 +32,7 @@ const SharingDialog = () => {
       });
       if (res.status === 201) {
         console.log({ res });
-        fetchShares(0, PageSize);
+        fetchShares(0, PageSize, true);
         addAlert({
           title: "Create share",
           type: "success",

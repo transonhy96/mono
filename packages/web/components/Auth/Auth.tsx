@@ -25,10 +25,9 @@ export const Auth = () => {
     },
   ];
   const { data: session } = useSession();
-  const { toggleSidebar } = useAppStore();
+  const { toggleSidebar, tab, setActiveTab } = useAppStore();
   const trigger = useMemo(() => {
     if (session && session?.user) {
-      console.log(session);
       return (
         <Button
           onClick={() => {
@@ -42,6 +41,7 @@ export const Auth = () => {
       return (
         <Button
           onClick={() => {
+            setActiveTab("login");
             toggleSidebar();
           }}
         >
@@ -49,13 +49,13 @@ export const Auth = () => {
         </Button>
       );
     }
-  }, [session, toggleSidebar]);
+  }, [session, toggleSidebar, setActiveTab]);
   return (
     <Sidebar title="" desc="" position="right" trigger={trigger}>
       {session && session?.user ? (
         <UserInfo></UserInfo>
       ) : (
-        <Tab tabs={tabs} active={tabs[0].key}></Tab>
+        <Tab tabs={tabs} active={tab !== "" ? tab : tabs[0].key}></Tab>
       )}
     </Sidebar>
   );

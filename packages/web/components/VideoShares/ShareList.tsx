@@ -1,6 +1,6 @@
 "use client";
 import { useAppStore } from "@/lib/store";
-import { useEffect, Fragment, useState } from "react";
+import { useEffect, Fragment } from "react";
 import ShareItem from "./ShareItem";
 import VideoSkeletal from "./Skeletal";
 import { nanoid } from "nanoid";
