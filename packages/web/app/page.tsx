@@ -1,9 +1,8 @@
-import {ShareList} from "@/components";
+import { ShareList } from "@/components";
 
 export default function Home() {
-  
   return (
-    <main className="min-h-screen">
+    <main className="">
       <ShareList></ShareList>
     </main>
   );

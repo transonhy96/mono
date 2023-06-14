@@ -1,6 +1,5 @@
 "use client";
-import { useState } from "react";
-import { Button } from "../ui/button";
+import { useMemo, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 export const PageSize = 3;
 export interface PaginationProps {
@@ -10,42 +9,55 @@ export interface PaginationProps {
 }
 const Pagination = (props: PaginationProps) => {
   const { total, next, prev } = props;
+  const pages = useMemo(() => {
+    return Math.ceil(total / PageSize);
+  }, [total]);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const nextHandler = () => {
-    console.log("next");
-    setCurrentPage(
-      currentPage + 1 <= Math.ceil(total / PageSize)
-        ? currentPage + 1
-        : currentPage
-    );
-    next && next(currentPage * PageSize, PageSize);
+    let c = currentPage;
+    if (c + 1 <= pages) {
+      setCurrentPage(c + 1);
+    } else {
+      setCurrentPage(pages);
+    }
+    if (currentPage !== pages) {
+      next && next(c * PageSize, PageSize);
+    }
   };
   const prevHandler = () => {
-    setCurrentPage(currentPage - 1 > 1 ? currentPage - 1 : 1);
-    prev && prev(currentPage * PageSize, PageSize);
+    let c = currentPage;
+    if (c - 1 > 0) {
+      setCurrentPage(c - 1);
+      prev && prev((c - 2) * PageSize, PageSize);
+    }
   };
   return (
-    <div className="flex gap-2 items-center border rounded-md p-2">
-      <div>Total page: {Math.ceil(total / PageSize)}</div>
-      <div>Current page: {currentPage}</div>
-      {currentPage > 1 && (
-        <Button
-          onClick={() => {
-            prevHandler();
-          }}
-        >
-          <ChevronLeft />
-        </Button>
+    <div className="flex gap-2 items-center border rounded-md px-6 py-2">
+      <button
+        className="rounded cursor-pointer"
+        onClick={() => {
+          prevHandler();
+        }}
+      >
+        <ChevronLeft />
+      </button>
+      {pages > 0 && (
+        <>
+          <div className="flex gap-1">
+            <span> {currentPage}</span>
+            <span> /</span>
+            <span> {pages}</span>
+          </div>
+        </>
       )}
-      {total > PageSize && (
-        <Button
-          onClick={() => {
-            nextHandler();
-          }}
-        >
-          <ChevronRight />
-        </Button>
-      )}
+      <button
+        className="rounded cursor-pointer"
+        onClick={() => {
+          nextHandler();
+        }}
+      >
+        <ChevronRight />
+      </button>
     </div>
   );
 };

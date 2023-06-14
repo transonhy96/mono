@@ -7,13 +7,12 @@ import { nanoid } from "nanoid";
 import Pagination, { PageSize } from "../Pagination";
 const ShareList = () => {
   const { fetchShares, shares, isFetchShareLoading, count } = useAppStore();
-  const [offset, setOffset] = useState(0);
   useEffect(() => {
-    fetchShares(offset, PageSize);
-  }, [fetchShares, offset]);
+    fetchShares(0, PageSize);
+  }, [fetchShares]);
   const skeletals = Array(PageSize).fill(1);
   return (
-    <div className="flex flex-col items-center gap-10 mt-10 h-screen">
+    <div className="flex flex-col items-center gap-8 mt-8">
       {isFetchShareLoading
         ? skeletals.map(() => (
           <Fragment key={nanoid()}>
@@ -27,10 +26,11 @@ const ShareList = () => {
       {count > PageSize && (
         <Pagination
           next={(offset) => {
-            setOffset(offset);
+            fetchShares(offset, PageSize);
           }}
           prev={(offset) => {
-            setOffset(offset);
+            console.log({ offset });
+            fetchShares(offset, PageSize);
           }}
           total={count}
         ></Pagination>
