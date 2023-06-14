@@ -6,4 +6,5 @@ export interface Share {
     user_id: string;
     email: string;
     user?: User;
+    created_at?: number;
 }
