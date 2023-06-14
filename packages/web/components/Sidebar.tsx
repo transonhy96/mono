@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import {
   Sheet,
   SheetClose,
@@ -9,27 +8,24 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { useAppStore } from "@/lib/store";
 export interface SheetProps {
   trigger: React.ReactNode;
-  action?: React.ReactNode;
   position: "right" | "left";
   title: string;
   desc: string;
-  actionType?: "submit" | "button";
   children?: React.ReactNode;
 }
 export function Sidebar(props: SheetProps) {
-  const {
-    trigger,
-    action,
-    actionType = "button",
-    position = "right",
-    title,
-    desc,
-    children,
-  } = props;
+  const { trigger, position = "right", title, desc, children } = props;
+  const { sidebar, setSidebar } = useAppStore();
   return (
-    <Sheet>
+    <Sheet
+      open={sidebar}
+      onOpenChange={(e) => {
+        setSidebar(e);
+      }}
+    >
       <SheetTrigger asChild>{trigger}</SheetTrigger>
       <SheetContent position={position} size="sm">
         <SheetHeader>

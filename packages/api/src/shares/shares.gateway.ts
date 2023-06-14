@@ -6,12 +6,15 @@ import { UnauthorizedException } from "@nestjs/common";
 import { User, UserShare } from "@prisma/client";
 @WebSocketGateway({
   namespace: "shares",
+  cors: {
+    origin: "*",
+  },
 })
 export class SharesGateway {
   constructor(
     private userService: UserService,
     private jwtService: JwtService,
-  ) {}
+  ) { }
   @WebSocketServer()
   server: Server;
 

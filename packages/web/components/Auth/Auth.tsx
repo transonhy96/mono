@@ -5,8 +5,9 @@ import { Tab, TabItem } from "../Tab";
 import { Button } from "../ui/button";
 import Login from "./Login";
 import Register from "./Register";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import UserInfo from "./UserInfo";
+import { useAppStore } from "@/lib/store";
 
 export const Auth = () => {
   const tabs: TabItem[] = [
@@ -24,20 +25,38 @@ export const Auth = () => {
     },
   ];
   const { data: session } = useSession();
+  const { toggleSidebar } = useAppStore();
   const trigger = useMemo(() => {
     if (session && session?.user) {
-      console.log(session)
-      return <Button>{session.user.email}</Button>;
+      console.log(session);
+      return (
+        <Button
+          onClick={() => {
+            toggleSidebar();
+          }}
+        >
+          {session.user.email}
+        </Button>
+      );
     } else {
-      return <Button>Login</Button>;
+      return (
+        <Button
+          onClick={() => {
+            toggleSidebar();
+          }}
+        >
+          Login
+        </Button>
+      );
     }
-  }, [session]);
-  return <Sidebar title="" desc="" position="right" trigger={trigger}>
-    {
-      session && session?.user ? 
-      <UserInfo></UserInfo>
-      :<Tab tabs={tabs} active={tabs[0].key }></Tab> 
-    }
-  </Sidebar>;
-  
+  }, [session, toggleSidebar]);
+  return (
+    <Sidebar title="" desc="" position="right" trigger={trigger}>
+      {session && session?.user ? (
+        <UserInfo></UserInfo>
+      ) : (
+        <Tab tabs={tabs} active={tabs[0].key}></Tab>
+      )}
+    </Sidebar>
+  );
 };
