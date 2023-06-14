@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { Auth } from "./Auth";
 import ThemeSwitcher from "./ThemeSwitcher";
 
@@ -9,9 +10,9 @@ export const Navbar = () => {
         className="max-w-[85rem] w-full mx-auto px-4 sm:flex sm:items-center sm:justify-between"
         aria-label="Global"
       >
-        <a className="flex-none text-xl font-semibold dark:text-white" href="#">
-          SHARE
-        </a>
+        <div className="flex-none text-xl font-semibold dark:text-white">
+          <Link href="/">Home</Link>
+        </div>
         <div className="flex flex-row gap-5 items-center mt-5 sm:justify-end sm:mt-0 sm:pl-5">
           <div className="font-medium text-blue-500">
             <Auth></Auth>
