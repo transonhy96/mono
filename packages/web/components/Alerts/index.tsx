@@ -25,7 +25,7 @@ export function Alerts(props: AlertItem) {
   }, []);
   return (
     <Alert
-      className="absolute top-25 left-4 z-50 w-1/4"
+      className="absolute left-4 top-24 z-50 w-1/4 cpNotification"
       variant={type === "error" ? "destructive" : "default"}
     >
       <div className="relative">

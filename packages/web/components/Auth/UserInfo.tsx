@@ -12,7 +12,7 @@ const UserInfo = () => {
         <div className="flex flex-col gap-5 mt-5">
             <div>Welcome {session && session?.user && session.user.email}</div>
             <Button
-                className="mt-3"
+                className="mt-3 cpBtnShare"
                 onClick={() => {
                     toggleSidebar();
                     toggle(MODAL.SHARING);
@@ -20,8 +20,8 @@ const UserInfo = () => {
             >
                 Start sharing
             </Button>
-            <Button variant={"outline"} onClick={() => signOut()}>
-                Logout
+            <Button className="cpBtnLogout" variant={"outline"} onClick={() => signOut()}>
+                <span>Logout</span>
             </Button>
         </div>
     );

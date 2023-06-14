@@ -44,14 +44,16 @@ const Pagination = (props: PaginationProps) => {
       {pages > 0 && (
         <>
           <div className="flex gap-1">
-            <span> {currentPage}</span>
+            <span className="currentPage"> {currentPage}</span>
             <span> /</span>
-            <span> {pages}</span>
+            <span className="totalPage"> {pages}</span>
           </div>
         </>
       )}
       <button
-        className="rounded cursor-pointer"
+        className="rounded cursor-pointer next"
+        data-testid="next"
+        id="next"
         onClick={() => {
           nextHandler();
         }}

@@ -30,6 +30,7 @@ export const Auth = () => {
     if (session && session?.user) {
       return (
         <Button
+        className="cpBtnLogged"
           onClick={() => {
             toggleSidebar();
           }}
@@ -40,6 +41,7 @@ export const Auth = () => {
     } else {
       return (
         <Button
+          className="cpAuthBtnLogin"
           onClick={() => {
             setActiveTab("login");
             toggleSidebar();

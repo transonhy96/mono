@@ -16,25 +16,32 @@ import {
 } from "../ui/form";
 import axios from "@/lib/axios";
 import { signIn } from "next-auth/react";
+import { useAppStore } from "@/lib/store";
 const Register = () => {
   const form = useForm<z.infer<typeof RegisterSchema>>({
     resolver: zodResolver(RegisterSchema),
   });
+  const { addAlert } = useAppStore();
   async function onSubmit(values: z.infer<typeof RegisterSchema>) {
     try {
       const { data } = await axios.post("/auth/signup", {
         email: values.email,
         password: values.password,
       });
-      console.log(data);
       if (data.token) {
         signIn("credentials", {
           email: values.email,
           password: values.password,
         });
+        form.reset();
       }
-    } catch (error) {
+    } catch (error: any) {
       //handle error
+      addAlert({
+        type: "error",
+        title: "Register error",
+        desc: error?.msg,
+      });
     }
   }
   return (
@@ -71,7 +78,7 @@ const Register = () => {
           name="reenter"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Password</FormLabel>
+              <FormLabel>Reenter</FormLabel>
               <FormControl>
                 <Input
                   type="password"

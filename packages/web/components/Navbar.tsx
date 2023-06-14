@@ -11,7 +11,9 @@ export const Navbar = () => {
         aria-label="Global"
       >
         <div className="flex-none text-xl font-semibold dark:text-white">
-          <Link href="/">Home</Link>
+          <Link href="/">
+            <span className="cpHome">Home</span>
+          </Link>
         </div>
         <div className="flex flex-row gap-5 items-center mt-5 sm:justify-end sm:mt-0 sm:pl-5">
           <div className="font-medium text-blue-500">

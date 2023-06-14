@@ -31,7 +31,7 @@ const SharingDialog = () => {
         user_id: 0,
       });
       if (res.status === 201) {
-        console.log({ res });
+        form.reset();
         fetchShares(0, PageSize, true);
         addAlert({
           title: "Create share",
@@ -69,7 +69,7 @@ const SharingDialog = () => {
               </FormItem>
             )}
           />
-          <Button type="submit">Confirm</Button>
+          <Button className="cpBtnShareSubmit" type="submit">Confirm</Button>
         </form>
       </Form>
     </Dialoger>

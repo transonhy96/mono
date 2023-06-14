@@ -1,7 +1,5 @@
 import { AlertItem } from "@/types/alertType";
 import { StateCreator } from "zustand";
-import { nanoid } from "nanoid";
-
 export interface AlertSlice {
     alerts: AlertItem[];
     addAlert: (item: AlertItem) => void;
@@ -15,7 +13,7 @@ export const createAlertSlice: StateCreator<AlertSlice> = (set, get) => ({
                 ...get().alerts,
                 {
                     ...item,
-                    id: nanoid(),
+                    id: (get().alerts.length + 1).toString(),
                 },
             ],
         });

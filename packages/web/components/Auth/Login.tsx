@@ -24,8 +24,6 @@ const Login = () => {
     signIn("credentials", {
       email: values.email,
       password: values.password,
-    }).then((s) => {
-      console.log({ s });
     });
   }
 
@@ -58,7 +56,7 @@ const Login = () => {
             </FormItem>
           )}
         />
-        <Button type="submit">Login</Button>
+        <Button type="submit" className="cp_btnLogin">Login</Button>
       </form>
     </Form>
   );

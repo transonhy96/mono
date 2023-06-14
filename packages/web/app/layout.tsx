@@ -19,7 +19,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={montser.className}>
+      <body className={montser.className + " " + "relative"}>
         <Providers>
           <Navbar />
           {children}

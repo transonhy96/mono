@@ -3,7 +3,6 @@ import { useAppStore } from "@/lib/store";
 import { useEffect, Fragment } from "react";
 import ShareItem from "./ShareItem";
 import VideoSkeletal from "./Skeletal";
-import { nanoid } from "nanoid";
 import Pagination, { PageSize } from "../Pagination";
 const ShareList = () => {
   const { fetchShares, shares, isFetchShareLoading, count } = useAppStore();
@@ -14,13 +13,13 @@ const ShareList = () => {
   return (
     <div className="flex flex-col items-center gap-8 mt-8">
       {isFetchShareLoading
-        ? skeletals.map(() => (
-          <Fragment key={nanoid()}>
+        ? skeletals.map((_, i) => (
+          <Fragment key={i}>
             <VideoSkeletal></VideoSkeletal>
           </Fragment>
         ))
         : shares.length > 0 &&
-        shares.map((s) => <ShareItem key={s.id} {...s} />)}
+        shares.map((share) => <ShareItem key={share.id} {...share} />)}
       {count > PageSize && (
         <Pagination
           next={(offset) => {
