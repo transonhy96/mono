@@ -17,38 +17,39 @@ import {
 import { MODAL } from "@/types/modal";
 import useAxiosAuth from "@/lib/hooks/useAxiosAuth";
 import { useAppStore } from "@/lib/store";
-const SharingDialog = ()=>{
+import { PageSize } from "@/components/Pagination";
+const SharingDialog = () => {
   const axiosAuth = useAxiosAuth();
-  const {toggle,addAlert} = useAppStore();
-    const form = useForm<z.infer<typeof SharingSchema>>({
-        resolver: zodResolver(SharingSchema),
+  const { toggle, addAlert, fetchShares } = useAppStore();
+  const form = useForm<z.infer<typeof SharingSchema>>({
+    resolver: zodResolver(SharingSchema),
+  });
+  async function onSubmit(values: z.infer<typeof SharingSchema>) {
+    try {
+      const res = await axiosAuth.post("/shares/create", {
+        url: values.url,
+        user_id: 0,
       });
-      async function onSubmit(values: z.infer<typeof SharingSchema>) {
-        try {
-          const res = await axiosAuth.post("/shares/create",
-        {
-          url:values.url,
-          user_id:0
+      if (res.status === 201) {
+        console.log({ res });
+        fetchShares(0, PageSize);
+        addAlert({
+          title: "Create share",
+          type: "success",
+          desc: "Create share successfully",
         });
-          if(res.status === 201){
-            addAlert({
-              title:"Create share",
-              type:'success',
-              desc:'Create share successfully'
-            });
-            toggle(MODAL.SHARING);
-          }else{
-            console.log(res.data);
-          }
-        } catch (error) {
-          //alert error
-          console.log(error);
-        }
-        
+        toggle(MODAL.SHARING);
+      } else {
+        console.log(res.data);
       }
-    
-    return(
-      <Dialoger title="Sharing video" type={MODAL.SHARING}>
+    } catch (error) {
+      //alert error
+      console.log(error);
+    }
+  }
+
+  return (
+    <Dialoger title="Sharing video" type={MODAL.SHARING}>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormField
@@ -58,7 +59,11 @@ const SharingDialog = ()=>{
               <FormItem>
                 <FormLabel>Youtube url</FormLabel>
                 <FormControl>
-                  <Input type="text" placeholder="Your youtube url" {...field} />
+                  <Input
+                    type="text"
+                    placeholder="Your youtube url"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -67,7 +72,7 @@ const SharingDialog = ()=>{
           <Button type="submit">Confirm</Button>
         </form>
       </Form>
-      </Dialoger>
-    )
-}
+    </Dialoger>
+  );
+};
 export default SharingDialog;

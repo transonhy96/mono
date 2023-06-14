@@ -20,16 +20,13 @@ const ShareList = () => {
           </Fragment>
         ))
         : shares.length > 0 &&
-        shares.map((s) => (
-          <ShareItem key={s.id} url={s.url} user_id={s.user_id} />
-        ))}
+        shares.map((s) => <ShareItem key={s.id} {...s} />)}
       {count > PageSize && (
         <Pagination
           next={(offset) => {
             fetchShares(offset, PageSize);
           }}
           prev={(offset) => {
-            console.log({ offset });
             fetchShares(offset, PageSize);
           }}
           total={count}

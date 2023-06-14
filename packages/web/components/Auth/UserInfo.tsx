@@ -9,9 +9,10 @@ const UserInfo = () => {
     const { toggleSidebar } = useAppStore();
     const { toggle } = useAppStore();
     return (
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-5 mt-5">
             <div>Welcome {session && session?.user && session.user.email}</div>
             <Button
+                className="mt-3"
                 onClick={() => {
                     toggleSidebar();
                     toggle(MODAL.SHARING);
@@ -19,7 +20,9 @@ const UserInfo = () => {
             >
                 Start sharing
             </Button>
-            <Button onClick={() => signOut()}>Logout</Button>
+            <Button variant={"destructive"} onClick={() => signOut()}>
+                Logout
+            </Button>
         </div>
     );
 };

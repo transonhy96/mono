@@ -1,6 +1,6 @@
 import { AlertItem } from "@/types/alertType";
 import { StateCreator } from "zustand";
-import { nanoid } from 'nanoid'
+import { nanoid } from "nanoid";
 
 export interface AlertSlice {
     alerts: AlertItem[];
@@ -9,24 +9,20 @@ export interface AlertSlice {
 }
 export const createAlertSlice: StateCreator<AlertSlice> = (set, get) => ({
     alerts: [],
-    addAlert:(item:AlertItem)=>{
+    addAlert: (item: AlertItem) => {
         set({
-            alerts:[
-              ...get().alerts,
-              {
-                ...item,
-                id: nanoid()
-              } 
-            ]
+            alerts: [
+                ...get().alerts,
+                {
+                    ...item,
+                    id: nanoid(),
+                },
+            ],
         });
     },
-    removeAlert: (id:string)=>{
-        console.log(id);
+    removeAlert: (id: string) => {
         set({
-            alerts:[
-                ...get().alerts.filter(s=>s.id !==id)
-            ]
-        })
+            alerts: [...get().alerts.filter((s) => s.id !== id)],
+        });
     },
-    
-})
+});
