@@ -6,7 +6,7 @@ const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
 const ShareItem = (props: Share) => {
   const { url, id, user, created_at } = props;
   return (
-    <div className="flex gap-10 border rounded-sm px-3 py-2 cursor-pointer opacity-75 hover:opacity-100">
+    <div className="flex gap-10 bg-secondary border rounded-sm px-3 py-2 cursor-pointer opacity-75 hover:opacity-100">
       <ReactPlayer width={250} height={200} url={url} />
       <div className="flex flex-col p-4 gap-3 truncate hover:text-clip">
         <p>Youtube video #{id}</p>

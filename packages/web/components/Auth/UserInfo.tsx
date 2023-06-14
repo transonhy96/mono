@@ -20,7 +20,7 @@ const UserInfo = () => {
             >
                 Start sharing
             </Button>
-            <Button variant={"destructive"} onClick={() => signOut()}>
+            <Button variant={"outline"} onClick={() => signOut()}>
                 Logout
             </Button>
         </div>
