@@ -26,6 +26,7 @@ RUN npm install
 
 RUN npx prisma generate
 
+RUN npm run build
 # Start the server using the production build
-CMD npm start
+CMD [ "node", "dist/main.js" ]
 
