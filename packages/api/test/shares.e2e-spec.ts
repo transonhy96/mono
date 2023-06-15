@@ -16,6 +16,7 @@ describe("SharesController (e2e)", () => {
     email: string;
     token: string;
   };
+  let prisma: PrismaService;
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
@@ -29,22 +30,26 @@ describe("SharesController (e2e)", () => {
     }).compile();
 
     app = moduleFixture.createNestApplication();
-    const prisma = moduleFixture.get<PrismaService>(PrismaService);
+    prisma = moduleFixture.get<PrismaService>(PrismaService);
     const auth = moduleFixture.get<AuthService>(AuthService);
     await app.init();
-    //Order is important
     await prisma.userShare.deleteMany({});
-    await prisma.user.deleteMany({});
+    await prisma.user.deleteMany({
+      where: {
+        email: {
+          equals: "share@test.com",
+        },
+      },
+    });
+
     signUpRes = await auth.signup({
       email: "share@test.com",
       password: "test",
     });
   });
 
-  it(route + "list " + "should create new user", () => {
-    return request(app.getHttpServer())
-      .get(route + "list")
-      .expect(200);
+  it(route + "list " + "should return status 200", () => {
+    return request(app.getHttpServer()).get("/shares/list").expect(200);
   });
 
   describe(route + "create", () => {

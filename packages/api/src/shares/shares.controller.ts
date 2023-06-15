@@ -15,7 +15,7 @@ export class SharesController {
     private shareService: SharesService,
     private userService: UserService,
     private shareGateway: SharesGateway,
-  ) {}
+  ) { }
 
   @Get("/list")
   async shares(@Query() { offset, limit }: PaginationParamsDto) {

@@ -1,4 +1,5 @@
 import {
+  DialogContentProps,
   Sheet,
   SheetClose,
   SheetContent,
@@ -9,7 +10,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { useAppStore } from "@/lib/store";
-export interface SheetProps {
+export interface SheetProps extends DialogContentProps {
   trigger: React.ReactNode;
   position: "right" | "left";
   title: string;
@@ -17,7 +18,7 @@ export interface SheetProps {
   children?: React.ReactNode;
 }
 export function Sidebar(props: SheetProps) {
-  const { trigger, position = "right", title, desc, children } = props;
+  const { trigger, position = "right", title, desc, children, ...rest } = props;
   const { sidebar, setSidebar } = useAppStore();
   return (
     <Sheet
@@ -27,7 +28,7 @@ export function Sidebar(props: SheetProps) {
       }}
     >
       <SheetTrigger asChild>{trigger}</SheetTrigger>
-      <SheetContent position={position} size="sm">
+      <SheetContent position={position} {...rest}>
         <SheetHeader>
           <SheetTitle>{title}</SheetTitle>
           <SheetDescription>{desc}</SheetDescription>

@@ -119,6 +119,8 @@ describe("AuthService", () => {
       const mock: SignupDto = { email: user_email, password: user_password };
       expect(await service.login(mock)).toEqual({
         token: jwt_token,
+        id: expect.any(Number),
+        email: user_email,
       });
       expect(mockUserService.get_user_by_email).toHaveBeenCalledWith(
         mock.email,

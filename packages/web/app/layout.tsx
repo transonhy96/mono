@@ -22,7 +22,7 @@ export default function RootLayout({
       <body className={montser.className + " " + "relative"}>
         <Providers>
           <Navbar />
-          {children}
+          <div className="w-full mt-24">{children}</div>
           <ModalsPortal></ModalsPortal>
           <AlertsPortal></AlertsPortal>
         </Providers>

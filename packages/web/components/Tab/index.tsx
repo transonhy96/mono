@@ -15,7 +15,7 @@ export interface TabProps {
 export function Tab(props: TabProps) {
   const { tabs, active } = props;
   return (
-    <Tabs defaultValue={active} className="w-[400px]">
+    <Tabs defaultValue={active} className="w-full">
       <TabsList className="grid w-full grid-cols-2">
         {tabs.length > 0 &&
           tabs.map((s) => (
@@ -27,7 +27,7 @@ export function Tab(props: TabProps) {
 
       {tabs.length > 0 &&
         tabs.map((s) => (
-          <TabsContent className="p-3 mt-4" key={s.key} value={s.key}>
+          <TabsContent key={s.key} value={s.key}>
             {s.asForm ? <></> : <div>{s.content}</div>}
           </TabsContent>
         ))}

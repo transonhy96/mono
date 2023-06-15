@@ -1,50 +1,32 @@
 "use client";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertItem } from "@/types/alertType";
 import { Button } from "../ui/button";
 import { useAppStore } from "@/lib/store";
 import { X } from "lucide-react";
-import { useEffect, useState } from "react";
-import { Progress } from "../ui/progress";
+import { useEffect } from "react";
+import * as Toast from "@radix-ui/react-toast";
 export function Alerts(props: AlertItem) {
   const { icon, title, desc, type, id = "" } = props;
-  const { removeAlert } = useAppStore();
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      removeAlert(id);
-    }, 3200);
-    return () => clearTimeout(timer);
-  }, [removeAlert, id]);
-  const [progress, setProgress] = useState<number>(0);
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setProgress((progress) => progress + (100 * 10) / 3000);
-    }, 10);
-    return () => clearInterval(timer);
-  }, []);
   return (
-    <Alert
-      className="absolute left-4 top-24 z-50 w-1/4 cpNotification"
-      variant={type === "error" ? "destructive" : "default"}
-    >
-      <div className="relative">
-        <Button
-          onClick={() => {
-            removeAlert(id);
-          }}
-          className="absolute top-1 right-1 px-2 py-0 h-7 cursor-pointer"
-        >
-          <X width={12} height={12} />
-        </Button>
-        {icon}
-        <AlertTitle>{title}</AlertTitle>
-        <AlertDescription>{desc}</AlertDescription>
-      </div>{" "}
-      <Progress
-        value={progress}
-        className="absolute bottom-[1px] right-0 h-1 px-[1px]"
-      />
-    </Alert>
+    <Toast.Provider swipeDirection="right">
+      <Toast.Root
+        duration={3000}
+        className="bg-secondary rounded-md shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] p-[15px] grid [grid-template-areas:_'title_action'_'description_action'] grid-cols-[auto_max-content] gap-x-[15px] items-center data-[state=open]:animate-slideIn data-[state=closed]:animate-hide data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=cancel]:translate-x-0 data-[swipe=cancel]:transition-[transform_200ms_ease-out] data-[swipe=end]:animate-swipeOut"
+      >
+        <Toast.Title className="[grid-area:_title] mb-[5px] font-medium text-slate12 text-[15px]">
+          {title}
+        </Toast.Title>
+        <Toast.Description>{desc}</Toast.Description>
+        <Toast.Action altText="text" />
+        <Toast.Close asChild>
+          <Button onClick={() => { }} className="[grid-area:_action]">
+            <X width={12} height={12} />
+          </Button>
+        </Toast.Close>
+      </Toast.Root>
+
+      <Toast.Viewport className="[--viewport-padding:_25px] fixed bottom-0 right-0 flex flex-col p-[var(--viewport-padding)] gap-[10px] w-[390px] max-w-[100vw] m-0 list-none z-[2147483647] outline-none" />
+    </Toast.Provider>
   );
 }

@@ -24,8 +24,9 @@
     "migrate:postgres-test": "dotenv -e .env.test -- npx prisma migrate dev",
     "migrate:postgres-prod": "dotenv -e .env -- npx prisma migrate dev",
     "db:prepare-prod": "yarn migrate:postgres-prod && dotenv -e .env -- npx prisma generate",
-    "db:prepare-dev": "yarn migrate:postgres-dev && dotenv -e .env.development -- npx prisma generate",
-    "studio": "dotenv -e .env.test -- npx prisma studio"
+    "db:prepare-dev": "yarn migrate:postgres-dev && dotenv -e .env.development -- npx prisma generate --yarn seed",
+    "studio": "dotenv -e .env.test -- npx prisma studio",
+    "seed": "ts-node prisma/seeds/test.ts"
   },
   "dependencies": {
     "@nestjs/common": "^9.0.0",

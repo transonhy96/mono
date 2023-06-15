@@ -30,7 +30,7 @@ export const Auth = () => {
     if (session && session?.user) {
       return (
         <Button
-        className="cpBtnLogged"
+          className="cpBtnLogged"
           onClick={() => {
             toggleSidebar();
           }}
@@ -53,12 +53,20 @@ export const Auth = () => {
     }
   }, [session, toggleSidebar, setActiveTab]);
   return (
-    <Sidebar title="" desc="" position="right" trigger={trigger}>
-      {session && session?.user ? (
-        <UserInfo></UserInfo>
-      ) : (
-        <Tab tabs={tabs} active={tab !== "" ? tab : tabs[0].key}></Tab>
-      )}
+    <Sidebar
+      title=""
+      desc=""
+      position="right"
+      trigger={trigger}
+      className="w-full sm:w-1/2 xl:w-1/4"
+    >
+      <div className="w-full mt-3 lg:mt-5 ">
+        {session && session?.user ? (
+          <UserInfo></UserInfo>
+        ) : (
+          <Tab tabs={tabs} active={tab !== "" ? tab : tabs[0].key}></Tab>
+        )}
+      </div>
     </Sidebar>
   );
 };

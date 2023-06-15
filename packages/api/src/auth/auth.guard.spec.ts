@@ -20,8 +20,15 @@ describe("AuthGuard", () => {
     }),
   };
   const mockJwtService = {
-    verify: jest.fn(async (token: string) => {
-      return token === valid_token;
+    verify_header: jest.fn(async (req: any) => {
+      if (req.headers["authorization"].split("Bearer ")[1] === valid_token) {
+        return {
+          email: users[0].email,
+          id: users[0].id,
+        };
+      } else {
+        return null;
+      }
     }),
   };
   beforeEach(async () => {
@@ -65,13 +72,13 @@ describe("AuthGuard", () => {
         }),
       });
       expect(mockExecutionContext.switchToHttp()).toBeDefined();
-      expect(await authGaurd.canActivate(mockExecutionContext)).toBe(true);
+      expect(await authGaurd.canActivate(mockExecutionContext)).toBe(false);
     });
 
     it("should return false", async () => {
       const mockExecutionContext = createMock<ExecutionContext>({});
       expect(mockExecutionContext.switchToHttp()).toBeDefined();
-      expect(await authGaurd.canActivate(mockExecutionContext)).toBe(true);
+      expect(await authGaurd.canActivate(mockExecutionContext)).toBe(false);
     });
   });
 });

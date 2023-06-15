@@ -11,25 +11,31 @@ const ShareList = () => {
   }, [fetchShares]);
   const skeletals = Array(PageSize).fill(1);
   return (
-    <div className="flex flex-col items-center gap-8 mt-8">
-      {isFetchShareLoading
-        ? skeletals.map((_, i) => (
+    <div className="flex flex-col items-center gap-8 mt-8 w-full sm:gap-3 sm:mt-3">
+      {isFetchShareLoading &&
+        shares &&
+        shares.length > 0 &&
+        skeletals.map((_, i) => (
           <Fragment key={i}>
             <VideoSkeletal></VideoSkeletal>
           </Fragment>
-        ))
-        : shares.length > 0 &&
+        ))}
+      {!isFetchShareLoading &&
+        shares &&
+        shares.length > 0 &&
         shares.map((share) => <ShareItem key={share.id} {...share} />)}
       {count > PageSize && (
-        <Pagination
-          next={(offset) => {
-            fetchShares(offset, PageSize);
-          }}
-          prev={(offset) => {
-            fetchShares(offset, PageSize);
-          }}
-          total={count}
-        ></Pagination>
+        <div className="mb-5">
+          <Pagination
+            next={(offset) => {
+              fetchShares(offset, PageSize);
+            }}
+            prev={(offset) => {
+              fetchShares(offset, PageSize);
+            }}
+            total={count}
+          ></Pagination>
+        </div>
       )}
     </div>
   );

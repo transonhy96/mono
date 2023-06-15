@@ -6,6 +6,7 @@ import { PrismaService } from "src/prisma/prisma.service";
 
 describe("AuthController (e2e)", () => {
   let app: INestApplication;
+  let prisma: PrismaService;
   const route = "/auth/";
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -15,16 +16,27 @@ describe("AuthController (e2e)", () => {
 
     app = moduleFixture.createNestApplication();
     await app.init();
-    const prisma = moduleFixture.get<PrismaService>(PrismaService);
+    prisma = moduleFixture.get<PrismaService>(PrismaService);
     await app.init();
-    await prisma.user.deleteMany({});
   });
 
-  it(route + "signup " + "should create new user", () => {
+  afterAll(async () => {
+    await prisma.userShare.deleteMany({});
+    await prisma.user.deleteMany({
+      where: {
+        email: {
+          equals: "another@test.com",
+        },
+      },
+    });
+  });
+
+  it(route + "signup " + "should create new user", async () => {
+    await prisma.user.deleteMany({});
     return request(app.getHttpServer())
       .post(route + "signup")
       .send({
-        email: "test@test.com",
+        email: "another@test.com",
         password: "test",
       })
       .expect(201);
@@ -33,7 +45,7 @@ describe("AuthController (e2e)", () => {
     return request(app.getHttpServer())
       .post(route + "signup")
       .send({
-        email: "test@test.com",
+        email: "another@test.com",
         password: "test",
       })
       .expect(403);
@@ -42,7 +54,7 @@ describe("AuthController (e2e)", () => {
     return request(app.getHttpServer())
       .post(route + "login")
       .send({
-        email: "test@test.com",
+        email: "another@test.com",
         password: "test",
       })
       .expect(201);
@@ -62,7 +74,7 @@ describe("AuthController (e2e)", () => {
     return request(app.getHttpServer())
       .post(route + "login")
       .send({
-        email: "test@test.com",
+        email: "another@test.com",
         password: "wrongpass",
       })
       .expect(400);

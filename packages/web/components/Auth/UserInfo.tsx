@@ -9,7 +9,7 @@ const UserInfo = () => {
     const { toggleSidebar } = useAppStore();
     const { toggle } = useAppStore();
     return (
-        <div className="flex flex-col gap-5 mt-5">
+        <div className="flex flex-col gap-5 mt-5 w-full">
             <div>Welcome {session && session?.user && session.user.email}</div>
             <Button
                 className="mt-3 cpBtnShare"
@@ -20,7 +20,11 @@ const UserInfo = () => {
             >
                 Start sharing
             </Button>
-            <Button className="cpBtnLogout" variant={"outline"} onClick={() => signOut()}>
+            <Button
+                className="cpBtnLogout"
+                variant={"outline"}
+                onClick={() => signOut()}
+            >
                 <span>Logout</span>
             </Button>
         </div>

@@ -5,6 +5,7 @@ import { PaginationParamsDto } from "src/shared/dtos/pagination.dto";
 import { CreateShareDto } from "./dto/user_shares.dto";
 import { PrismaService } from "src/prisma/prisma.service";
 import { SharesGateway } from "./shares.gateway";
+import { JwtService } from "src/jwt/jwt.service";
 
 describe("SharesService", () => {
   let service: SharesService;
@@ -58,7 +59,7 @@ describe("SharesService", () => {
   };
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [SharesService, PrismaService, SharesGateway],
+      providers: [SharesService, PrismaService],
     })
       .overrideProvider(PrismaService)
       .useValue(mockPrismaService)
