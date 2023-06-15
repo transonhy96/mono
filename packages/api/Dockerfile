@@ -7,14 +7,25 @@ WORKDIR /usr/src/app
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
 # where available (npm@5+)
 COPY package*.json ./
+# generated prisma files
+COPY prisma ./prisma/
+
+# COPY ENV variable
+COPY .env ./
+
+# COPY tsconfig.json file
+COPY tsconfig.json ./
+
+COPY tsconfig.build.json ./
+
+COPY . .
 
 RUN npm install
 # If you are building your code for production
 # RUN npm ci --omit=dev
 
-# Bundle app source
-COPY . .
+RUN npx prisma generate
 
 # Start the server using the production build
-CMD [ "npm", "run", "dev" ]
+CMD npm start
 

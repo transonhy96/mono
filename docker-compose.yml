@@ -1,17 +1,17 @@
-version: "3.8"
+version: "3.9"
 services:
-  web:
-    build:
-      dockerfile: Dockerfile
-      context: ./packages/web/
-      target: production
-    volumes:
-      - .:/usr/src/web
-    ports:
-      - "8080:8080"
-      - "8081:8081"
-    depends_on:
-      - "api"
+  # web:
+  #   build:
+  #     dockerfile: Dockerfile
+  #     context: ./packages/web/
+  #     target: development
+  #   volumes:
+  #     - .:/usr/src/web
+  #   ports:
+  #     - "8080:8080"
+  #     - "8081:8081"
+  #   depends_on:
+  #     - "api"
   api:
     build:
       dockerfile: Dockerfile
@@ -23,6 +23,10 @@ services:
       - ./packages/api/.env
     ports:
       - 3000:3000
+    command: bash -c "
+      npx prisma migrate dev &&
+      npx prisma generate &&
+      nest start --watch"
     depends_on:
       - "db"
   db:
