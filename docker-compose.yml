@@ -1,15 +1,17 @@
 version: "3.8"
 services:
-  web:
-    build:
-      dockerfile: Dockerfile
-      context: ./packages/web/
-      target: development
-    ports:
-      - "8080:8080"
-      - "8081:8081"
-    depends_on:
-      - "api"
+  # web:
+  #   build:
+  #     dockerfile: Dockerfile
+  #     context: ./packages/web/
+  #     target: production
+  #   volumes:
+  #     - .:/usr/src/web
+  #   ports:
+  #     - "8080:8080"
+  #     - "8081:8081"
+  #   depends_on:
+  #     - "api"
   api:
     build:
       dockerfile: Dockerfile
@@ -19,7 +21,6 @@ services:
       - .:/usr/src/app
     env_file:
       - ./packages/api/.env
-    command: npm run start:prod
     ports:
       - 3000:3000
     depends_on:
