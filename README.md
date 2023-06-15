@@ -1,12 +1,12 @@
 # Introduction
 
-- This project contains a RESt api server with jwt authentication system and
-  prisma orm along side postgresql database and a nextjs web for user to sharing
+- This project contains a REST api server with jwt authentication system and
+  prisma orm along side with postgresql database and a nextjs web for user to sharing
   youtube videos
 - Api server has a websocket basic implementation for notify user newly created
   video
 
-# Project dependencies (version details please visit package.json files )
+# Project dependencies (version details please visit package.json files)
 
 ## Api server
 
@@ -112,7 +112,7 @@ cd packages/web && npm run cypress
 
 ## Usage
 
-### development
+### Development
 
 - Locate http://localhost:8080 to interact with frontend
 - Api document located at http://localhost:3000/api
