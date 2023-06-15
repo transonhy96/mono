@@ -1,0 +1,76 @@
+import { Test, TestingModule } from "@nestjs/testing";
+import { INestApplication } from "@nestjs/common";
+import * as request from "supertest";
+import { AppModule } from "./../src/app.module";
+import { PrismaService } from "src/prisma/prisma.service";
+import { AuthService } from "src/auth/auth.service";
+import { UserService } from "src/user/user.service";
+import { HashingService } from "src/hashing/hashing.service";
+import { JwtService } from "src/jwt/jwt.service";
+
+describe("SharesController (e2e)", () => {
+  let app: INestApplication;
+  const route = "/shares/";
+  let signUpRes: {
+    id: number;
+    email: string;
+    token: string;
+  };
+  let prisma: PrismaService;
+  beforeEach(async () => {
+    const moduleFixture: TestingModule = await Test.createTestingModule({
+      imports: [AppModule],
+      providers: [
+        PrismaService,
+        AuthService,
+        UserService,
+        HashingService,
+        JwtService,
+      ],
+    }).compile();
+
+    app = moduleFixture.createNestApplication();
+    prisma = moduleFixture.get<PrismaService>(PrismaService);
+    const auth = moduleFixture.get<AuthService>(AuthService);
+    await app.init();
+    await prisma.userShare.deleteMany({});
+    await prisma.user.deleteMany({
+      where: {
+        email: {
+          equals: "share@test.com",
+        },
+      },
+    });
+
+    signUpRes = await auth.signup({
+      email: "share@test.com",
+      password: "test",
+    });
+  });
+
+  it(route + "list " + "should return status 200", () => {
+    return request(app.getHttpServer()).get("/shares/list").expect(200);
+  });
+
+  describe(route + "create", () => {
+    it(route + "create " + " should throw 403 error", () => {
+      return request(app.getHttpServer())
+        .post(route + "create")
+        .send({
+          user_id: 0,
+          url: "http://localhost:3000",
+        })
+        .expect(403);
+    });
+    it(route + "create " + " should create new share", () => {
+      return request(app.getHttpServer())
+        .post(route + "create")
+        .set("Authorization", "Bearer " + signUpRes.token)
+        .send({
+          user_id: signUpRes.id,
+          url: "http://localhost:3000",
+        })
+        .expect(201);
+    });
+  });
+});
