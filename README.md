@@ -37,7 +37,7 @@
 - Clone the repo
 
 ```shell
-git clone -b frontend https://github.com/transonhy96/mono
+git clone -b main https://github.com/transonhy96/mono
 
 ```
 
