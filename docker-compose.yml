@@ -1,17 +1,17 @@
 version: "3.8"
 services:
-  # web:
-  #   build:
-  #     dockerfile: Dockerfile
-  #     context: ./packages/web/
-  #     target: production
-  #   volumes:
-  #     - .:/usr/src/web
-  #   ports:
-  #     - "8080:8080"
-  #     - "8081:8081"
-  #   depends_on:
-  #     - "api"
+  web:
+    build:
+      dockerfile: Dockerfile
+      context: ./packages/web/
+      target: production
+    volumes:
+      - .:/usr/src/web
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    depends_on:
+      - "api"
   api:
     build:
       dockerfile: Dockerfile
