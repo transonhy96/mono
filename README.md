@@ -128,3 +128,4 @@ cd packages/web && npm run cypress
 ## Troubleshooting
 
 - Live server deploy on free hosting service so there will be delays and suchs
+- Please test it with patient, if there is hanging or freezing screen please reload
