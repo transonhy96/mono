@@ -16,7 +16,7 @@ describe('Create share spec', () => {
       cy.get('.cpBtnShare').should("not.exist");
     })
   
-    it('should be failed  due to youtube url format', () => {
+    it('should be failed due to youtube url format', () => {
         cy.get('.cpAuthBtnLogin').click();
         cy.get('input[type="email"]')
           .type('test@test.com').should('have.value', 'test@test.com');
@@ -28,10 +28,11 @@ describe('Create share spec', () => {
         cy.get('input[name="url"]')
           .type('test@test.com').should('have.value', 'test@test.com');
         cy.get('.cpBtnShareSubmit').click(); 
+        // If the input still there means the form did not submit
         cy.get('input[name="url"]').should('have.value',"test@test.com")
     })
 
-    it('should be create youtube share', () => {
+    it('should create youtube share', () => {
         cy.get('.cpAuthBtnLogin').click();
         cy.get('input[type="email"]')
           .type('test@test.com').should('have.value', 'test@test.com');
