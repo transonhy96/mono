@@ -14,11 +14,11 @@ WORKDIR /usr/src/app
 
 COPY --chown=node package*.json ./
 
-RUN yarn install
+RUN npm install
 
 COPY --chown=node . .
 
-RUN yarn build
+RUN npm run build
 
 ENV HOST=0.0.0.0 PORT=3000
 
