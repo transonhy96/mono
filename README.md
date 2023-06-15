@@ -89,6 +89,27 @@ cd ../web && npm install && npm run dev
 
 - Api document located at https://api-r.onrender.com/api or http://localhost:3000/api
 
+## Testing
+### Unit test
+- Backend
+```shell
+cd packages/api && npm run test
+```
+- Frontend
+```shell
+cd packages/web && npm run test
+```
+### Integration test
+
+- Backend
+```shell
+cd packages/api && npm run test:e2e
+```
+- Frontend
+```shell
+cd packages/web && npm run cypress
+```
+
 ## Usage
 
 ### development
