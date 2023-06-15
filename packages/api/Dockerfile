@@ -1,27 +1,22 @@
 
+# Base image
+FROM node:18
 
-###################
-# BUILD FOR LOCAL DEVELOPMENT
-###################
-
-FROM node:18-alpine  
-
-USER node
-
-RUN mkdir -p /usr/src/app
-
+# Create app directory
 WORKDIR /usr/src/app
 
-COPY --chown=node package*.json ./
+# A wildcard is used to ensure both package.json AND package-lock.json are copied
+COPY package*.json ./
 
+# Install app dependencies
 RUN npm install
 
-COPY --chown=node . .
+# Bundle app source
+COPY . .
 
+# Creates a "dist" folder with the production build
 RUN npm run build
 
-ENV HOST=0.0.0.0 PORT=3000
+# Start the server using the production build
+CMD [ "node", "dist/main.js" ]
 
-EXPOSE 3000
-
-CMD ["sh", "start.sh"]

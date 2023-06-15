@@ -27,14 +27,17 @@ const SocketProvider = ({ children }: { children: React.ReactNode }) => {
   const { addAlert } = useAppStore();
   useEffect(() => {
     if (!socket && session && session.user && session.user.token) {
-      let socketClient = io("http://localhost:3000/shares", {
-        extraHeaders: {
-          Authorization: `Bearer ${session?.user.token}`,
-        },
-        auth: {
-          token: `Bearer ${session?.user.token}`,
-        },
-      });
+      let socketClient = io(
+        process.env.API_URL + "/shares" || "http://localhost:3000/shares",
+        {
+          extraHeaders: {
+            Authorization: `Bearer ${session?.user.token}`,
+          },
+          auth: {
+            token: `Bearer ${session?.user.token}`,
+          },
+        }
+      );
       setSocket(socketClient);
     }
     if (socket) {
