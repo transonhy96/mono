@@ -87,14 +87,14 @@ cd ../web && npm install && npm run dev
 
 ## Swagger Api document
 
-- Api document located at https://api-r.onrender.com/api or localhost:3000/api
+- Api document located at https://api-r.onrender.com/api or http://localhost:3000/api
 
 ## Usage
 
 ### development
 
-- Locate localhost:8080 to interact with frontend
-- Api document located at localhost:3000/api
+- Locate http://localhost:8080 to interact with frontend
+- Api document located at http://localhost:3000/api
 
 ## Basic flow
 
