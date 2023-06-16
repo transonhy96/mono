@@ -1,9 +1,9 @@
 # Introduction
 
 - This project contains a REST api server with jwt authentication system and
-  prisma orm along side with postgresql database and a nextjs web for user to sharing
+  Prisma ORM along side with Postgresql database and a Nextjs web for user to sharing
   youtube videos
-- Api server has a websocket basic implementation for notify user newly created
+- Api server has a Websocket basic implementation for notify user newly created
   video
 
 # Project dependencies (version details please visit package.json files)
@@ -45,7 +45,7 @@ git clone -b main https://github.com/transonhy96/mono
 ```
 
 - Change directory to repo
-- Rename .env.example to .env in project root, packages/api and packages/web
+- Rename .env.example file to .env in project root, packages/api and packages/web
 - Build images &#8595;
 
 ## Build images
@@ -67,7 +67,7 @@ docker compose up -d
 - Install postgresql -> https://www.postgresql.org/ and follow introduction for specific arch
 - Create database and db username password
 - Change db config in .env in packages/api
-- Run database migration
+- Run database migration &#8595;
 
 ### Database migration
 
