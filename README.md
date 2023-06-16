@@ -13,6 +13,7 @@
 - Nestjs -> https://nestjs.com/
 - Postgresql
 - Bcrypt fo password hash
+- Class validator - class tranformation for user input validation -> https://docs.nestjs.com/techniques/validation
 - Nestjs Gateway using socket.io wrapper
 - Prisma ORM to connect and interact with postgresql -> https://www.prisma.io/
 - Jsonwebtoken for authentication -> https://jwt.io/
@@ -24,6 +25,8 @@
 
 - Nextjs 13 with app directory routing -> https://nextjs.org/
 - Next-auth to manage user authentication session -> https://next-auth.js.org/
+- Zod for input validation -> https://zod.dev/
+- React-hook-form for user form -> https://react-hook-form.com/
 - Zustand for client state management -> https://zustand-demo.pmnd.rs/
 - Socketio-client for websocket connection -> https://socket.io/
 - Tailwindcss for styling -> https://tailwindcss.com/
@@ -64,7 +67,13 @@ docker compose up -d
 - Install postgresql -> https://www.postgresql.org/ and follow introduction for specific arch
 - Create database and db username password
 - Change db config in .env in packages/api
+- Run database migration
 
+### Database migration
+
+```shell
+npm run db:prepare-dev
+```
 ### Api
 
 ```shell
@@ -84,13 +93,22 @@ cd ../web && npm install && npm run dev
 | ------- | ---- |
 | web     | 8080 |
 | api     | 3000 |
+| db      | 5432 |
+| socket  | 3000 |
 
+## Socket 
+
+- Endpoint : http://localhost:3000/shares
+- Require authentication using Authorization key in header of handsake like rest endpoint
+- 
 ## Swagger Api document
 
 - Api document located at https://api-r.onrender.com/api or http://localhost:3000/api
 
 ## Testing
+
 ### Unit test
+
 - Backend
 ```shell
 cd packages/api && npm run test
