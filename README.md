@@ -11,10 +11,10 @@
 ## Api server
 
 - Nestjs -> https://nestjs.com/
-- Postgresql
-- Bcrypt fo password hash
+- Postgresql - https://www.postgresql.org/
+- Bcrypt for password hash -> https://www.npmjs.com/package/bcrypt
 - Class validator - class tranformation for user input validation -> https://docs.nestjs.com/techniques/validation
-- Nestjs Gateway using socket.io wrapper
+- Nestjs Gateway using socket.io wrapper -> https://docs.nestjs.com/websockets/gateways
 - Prisma ORM to connect and interact with postgresql -> https://www.prisma.io/
 - Jsonwebtoken for authentication -> https://jwt.io/
 - Swagger for api docs -> https://docs.nestjs.com/openapi/introduction
