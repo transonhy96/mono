@@ -64,7 +64,7 @@ docker compose up -d
 
 ### Database
 
-- Install postgresql -> https://www.postgresql.org/ and follow introduction for specific arch
+- Install postgresql -> https://www.postgresql.org/ and follow introductions for specific arch
 - Create database and db username password
 - Change db config in .env in packages/api
 - Run database migration &#8595;
@@ -99,8 +99,8 @@ cd ../web && npm install && npm run dev
 ## Socket 
 
 - Endpoint : http://localhost:3000/shares
-- Require authentication using Authorization key in header of handsake like rest endpoint
-- 
+- Require authentication using Authorization key in header of handshake like rest endpoint
+  
 ## Swagger Api document
 
 - Api document located at https://api-r.onrender.com/api or http://localhost:3000/api
